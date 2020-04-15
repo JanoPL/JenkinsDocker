@@ -1,0 +1,14 @@
+version: "3.7"
+
+volumes:
+  jenkins_volumes:
+    driver: local
+
+services:
+  jenkis:
+    image: jenkins/jenkins:lts
+    ports:
+    - 8080:8080
+    - 50000:50000
+    volumes:
+    - jenkins_volumes:/var/jenkins_home
