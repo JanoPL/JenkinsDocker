@@ -5,8 +5,12 @@ volumes:
     driver: local
 
 services:
-  jenkis:
-    image: jenkins/jenkins:lts
+  jenkins:
+    image: jenkins_php:latest
+    container_name: jenkins_php
+    build: 
+      context: .
+      dockerfile: ./Dockerfile
     ports:
     - 8080:8080
     - 50000:50000
