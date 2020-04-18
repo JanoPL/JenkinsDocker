@@ -18,7 +18,7 @@ ARG TARGET_PHP_VERSION=7.4
 RUN apt-get update &&\
     apt-get upgrade -y &&\
     apt-get install -y \
-    apache2 php${TARGET_PHP_VERSION} php${TARGET_PHP_VERSION}-apcu php${TARGET_PHP_VERSION}-mbstring php${TARGET_PHP_VERSION}-curl php${TARGET_PHP_VERSION}-gd \
+    php${TARGET_PHP_VERSION} php${TARGET_PHP_VERSION}-apcu php${TARGET_PHP_VERSION}-mbstring php${TARGET_PHP_VERSION}-curl php${TARGET_PHP_VERSION}-gd \
     php${TARGET_PHP_VERSION}-imagick php${TARGET_PHP_VERSION}-intl php${TARGET_PHP_VERSION}-bcmath \
     php${TARGET_PHP_VERSION}-mysql php${TARGET_PHP_VERSION}-xdebug php${TARGET_PHP_VERSION}-xml php${TARGET_PHP_VERSION}-zip curl
 
