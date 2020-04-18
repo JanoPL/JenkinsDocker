@@ -8,11 +8,16 @@ services:
   jenkins:
     image: jenkins_php:latest
     container_name: jenkins_php
+    env_file:
+      - .env
     build: 
       context: .
       dockerfile: ./Dockerfile
+      args:
+        - TARGET_PHP_VERSION=${TARGET_PHP_VERSION}
     ports:
     - 8080:8080
     - 50000:50000
     volumes:
     - jenkins_volumes:/var/jenkins_home
+    restart: always

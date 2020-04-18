@@ -2,3 +2,4 @@ analysis-core:1.95
 warnings-ng:8.1.0
 violations:0.7.11
 blueocean:1.22.0
+ssh-agent:1.19
