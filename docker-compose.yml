@@ -1,12 +1,13 @@
 version: "3.7"
 
 volumes:
-  jenkins_volumes:
+  jenkins_home:
     driver: local
+    external: true
 
 services:
   jenkins:
-    image: jenkins_php:latest
+    image: jenkins-php:latest
     container_name: jenkins_php
     env_file:
       - .env
@@ -19,5 +20,5 @@ services:
     - 8080:8080
     - 50000:50000
     volumes:
-    - jenkins_volumes:/var/jenkins_home
+    - jenkins_home:/var/jenkins_home
     restart: always
