@@ -1,29 +1,31 @@
-FROM  jenkins/jenkins:lts-alpine
+FROM jenkins/jenkins:latest
 
 USER root
 
-RUN apk update && \
-    apk upgrade
+RUN apt-get update &&\
+    apt-get upgrade -y &&\
+    apt-get install -y tzdata &&\
+    apt-get install -y \
+    wget apt-transport-https lsb-release ca-certificates apt-utils acl nano iproute2
 
-RUN apk --no-cache add libssh2 libpng freetype libjpeg-turbo libgcc \
-libxml2 libstdc++ icu-libs libltdl libmcrypt
+RUN \
+  apt-get -yqq install apt-transport-https lsb-release ca-certificates && \
+  wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg && \
+  echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list && \
+  apt-get -qq update && apt-get -qqy upgrade
 
-RUN apk --no-cache add php7 php7-fpm php7-opcache php7-gd php7-pdo_mysql \
-php7-mysqli php7-mysqlnd php7-mysqli php7-zlib php7-curl php7-phar \
-php7-iconv php7-pear php7-xml php7-pdo php7-ctype php7-mbstring \
-php7-soap php7-intl php7-bcmath php7-dom php7-xmlreader php7-openssl \
-php7-tokenizer php7-simplexml php7-json
+ARG TARGET_PHP_VERSION=7.4
+RUN apt-get update &&\
+    apt-get upgrade -y &&\
+    apt-get install -y \
+    apache2 php${TARGET_PHP_VERSION} php${TARGET_PHP_VERSION}-apcu php${TARGET_PHP_VERSION}-mbstring php${TARGET_PHP_VERSION}-curl php${TARGET_PHP_VERSION}-gd \
+    php${TARGET_PHP_VERSION}-imagick php${TARGET_PHP_VERSION}-intl php${TARGET_PHP_VERSION}-bcmath \
+    php${TARGET_PHP_VERSION}-mysql php${TARGET_PHP_VERSION}-xdebug php${TARGET_PHP_VERSION}-xml php${TARGET_PHP_VERSION}-zip curl
 
-# Download and install composer installer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 RUN php -r "if (hash_file('sha384', 'composer-setup.php') === 'e0012edf3e80b6978849f5eff0d4b4e4c79ff1609dd1e613307e16318854d24ae64f26d17af3ef0bf7cfb710ca74755a') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
 RUN php composer-setup.php
 RUN php -r "unlink('composer-setup.php');"
 RUN mv composer.phar /usr/local/bin/composer
-RUN chmod +x /usr/local/bin/composer
-RUN rm -f composer-setup.php
 
 USER jenkins
-
-COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
-RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
