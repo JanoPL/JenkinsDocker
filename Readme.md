@@ -1,14 +1,22 @@
 # Jenkins
-![Docker Automated build](https://img.shields.io/docker/automated/johnnypl/jenkins-php)
 ![Docker Image Version (latest by date)](https://img.shields.io/docker/v/johnnypl/jenkins-php)
 
-Docker Jenkins with php
+Docker Jenkins with php and node, npm
 
 Image based on jenkins debian the version [jenkins/jenkins:latest](https://hub.docker.com/r/jenkins/jenkins) 
 
 contains: 
-- php
-- plugins
+- Node version: 10.20
+- PHP version: 7.4.5
+- plugins: 
+    ```shell script
+    analysis-core:1.96
+    warnings-ng:8.1.0
+    violations:0.7.11
+    blueocean:1.22.0
+    ssh-agent:1.19
+    ```
+
 
 ## Get started
 To run simply enter one of the following commands or you can use the docker-compose command
@@ -72,6 +80,7 @@ services:
 <hr> 
 
 #### Requirements
-
+ 
+Minimum version:
 - Docker: 19.03.5
 - docker-compose: 1.25.4
