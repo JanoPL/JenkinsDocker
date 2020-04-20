@@ -48,4 +48,8 @@ RUN /tmp/scripts/timezone.sh ${TZ}
 
 RUN /tmp/scripts/composer_installer.sh
 
+RUN npm install -g @angular/cli
+
+RUN apt autoremove -y
+
 USER jenkins

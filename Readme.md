@@ -1,13 +1,14 @@
 # Jenkins
 ![Docker Image Version (latest by date)](https://img.shields.io/docker/v/johnnypl/jenkins-php)
 
-Docker Jenkins with php and node, npm
+Docker Jenkins with php node, npm, Angular CLI 
 
 Image based on jenkins debian the version [jenkins/jenkins:latest](https://hub.docker.com/r/jenkins/jenkins) 
 
 contains: 
 - Node version: 10.20
 - PHP version: 7.4.5
+- Angular CLI version: 9.1.1
 - plugins: 
     ```shell script
     analysis-core:1.96
