@@ -6,7 +6,17 @@ RUN apt-get update &&\
     apt-get upgrade -y &&\
     apt-get install -y tzdata &&\
     apt-get install -y \
-    wget apt-transport-https lsb-release ca-certificates apt-utils acl nano iproute2
+    wget \
+    apt-transport-https \
+    lsb-release \
+    ca-certificates \
+    apt-utils \
+    gcc \
+    g++ \
+    make
+
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
+RUN apt-get install -y nodejs
 
 RUN \
   apt-get -yqq install apt-transport-https lsb-release ca-certificates && \
@@ -27,5 +37,10 @@ RUN php -r "if (hash_file('sha384', 'composer-setup.php') === 'e0012edf3e80b6978
 RUN php composer-setup.php
 RUN php -r "unlink('composer-setup.php');"
 RUN mv composer.phar /usr/local/bin/composer
+
+RUN apt-get remove -y \
+    gcc \
+    g++ \
+    make
 
 USER jenkins
