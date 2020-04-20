@@ -46,4 +46,8 @@ RUN apt-get remove -y \
     g++ \
     make
 
+RUN npm install -g @angular/cli
+
+RUN apt autoremove -y
+
 USER jenkins
