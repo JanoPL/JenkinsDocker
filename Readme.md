@@ -61,7 +61,7 @@ volumes:
 
 services:
   jenkins:
-    image: jenkins-php:latest
+    image: johnnypl/jenkins-php:latest-angular
     container_name: jenkins_php
     env_file:
       - .env
