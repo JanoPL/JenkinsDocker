@@ -50,4 +50,10 @@ RUN npm install -g @angular/cli
 
 RUN apt autoremove -y
 
+# Configure timezone.sh
+ARG TZ
+COPY ./scripts /tmp/scripts/
+RUN chmod +x -R /tmp/
+RUN /tmp/scripts/timezone.sh ${TZ}
+
 USER jenkins
