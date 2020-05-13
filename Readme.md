@@ -31,6 +31,13 @@ Start container
 docker run -p 8080:8080 -p 50000:50000 --restart=always -v jenkins_home:/var/jenkins_home --name=jenkins johnnypl/jenkins-php 
 ```
 
+#### Time Zone
+
+Start container with your time zone simple added docker environment ``` -e TZ=Europe/Warsaw ```
+```shell script
+docker run -p 8080:8080 -p 50000:50000 --restart=always -v jenkins_home:/var/jenkins_home --name=jenkins johnnypl/jenkins-php -e TZ=Europe/Warsaw
+``` 
+
 <hr>
 
 ## Source code 

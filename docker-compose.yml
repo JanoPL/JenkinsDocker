@@ -15,6 +15,7 @@ services:
       context: .
       dockerfile: ./Dockerfile
       args:
+        - TZ=Europe/Warsaw
         - TARGET_PHP_VERSION=${TARGET_PHP_VERSION}
     ports:
     - 8080:8080
