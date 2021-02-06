@@ -1,0 +1,57 @@
+version: "3.6"
+
+volumes:
+  ddev-jenkins:
+    name: "${DDEV_SITENAME}-jenkins"
+
+  ddev-global-cache:
+    name: ddev-global-cache
+
+services:
+  jenkins:
+    image: johnnypl/jenkins-php:latest
+    container_name: ddev-${DDEV_SITENAME}-jenkins
+    env_file:
+      - .Jenkins/.env
+    build: 
+      context: ./.Jenkins
+      dockerfile: Dockerfile
+      args:
+        - TZ=Europe/Warsaw
+        - TARGET_PHP_VERSION=${TARGET_PHP_VERSION}
+    environment:
+      - TARGET_PHP_VERSION
+      - DDEV_HOSTNAME
+      - DDEV_PHP_VERSION
+      - DDEV_PRIMARY_URL
+      - DDEV_PROJECT
+      - DDEV_PROJECT_TYPE
+      - DDEV_ROUTER_HTTP_PORT
+      - DDEV_ROUTER_HTTPS_PORT
+      - DDEV_SITENAME
+      - DDEV_TLD
+      - DOCKER_IP=127.0.0.1
+      - HOST_DOCKER_INTERNAL_IP=
+      - IS_DDEV_PROJECT=true
+    ports:
+      - 8080:8080
+      - 50000:50000
+    labels:
+      com.ddev.site-name: ${DDEV_SITENAME}
+      com.ddev.approot: $DDEV_APPROOT
+      com.ddev.platform: ddev
+      com.ddev.app-type: php
+    volumes:
+      - type: "volume"
+        source: ddev-jenkins
+        target: /var/jenkins/jenkins_home
+        volume:
+          nocopy: true
+      - ddev-global-cache:/mnt/ddev-global-cache
+    hostname: jenkinsDocker
+    restart: always
+    healthcheck:
+      interval: 1s
+      retries: 120
+      start_period: 120s
+      timeout: 120s
