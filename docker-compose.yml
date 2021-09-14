@@ -16,6 +16,7 @@ services:
       args:
         - TZ=Europe/Warsaw
         - TARGET_PHP_VERSION=${TARGET_PHP_VERSION}
+        - TARGET_NODEJS_VERSION=${TARGET_NODEJS_VERSION}
     ports:
     - 8080:8080
     - 50000:50000

@@ -15,7 +15,8 @@ RUN apt-get update &&\
     g++ \
     make
 
-RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
+ARG TARGET_NODEJS_VERSION=12
+RUN curl -sL https://deb.nodesource.com/setup_${TARGET_NODEJS_VERSION}.x | bash -
 RUN apt-get install -y nodejs
 
 RUN \
