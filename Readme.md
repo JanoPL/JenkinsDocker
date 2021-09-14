@@ -6,15 +6,14 @@ Docker Jenkins with php and node, npm
 Image based on jenkins debian the version [jenkins/jenkins:latest](https://hub.docker.com/r/jenkins/jenkins) 
 
 contains: 
-- Node version: 10.20
-- PHP version: 7.4.5
+- Node version: 16
+- PHP version: 8.0
 - plugins: 
     ```shell script
-    analysis-core:1.96
-    warnings-ng:8.1.0
-    violations:0.7.11
-    blueocean:1.22.0
-    ssh-agent:1.19
+    analysis-model-api:10.3.0
+    warnings-ng:9.5.0
+    blueocean:1.24.8
+    ssh-agent:1.23
     ```
 
 
@@ -30,7 +29,10 @@ docker volume create jenkins_home
 ```shell script
 docker run -p 8080:8080 -p 50000:50000 --restart=always -v jenkins_home:/var/jenkins_home --name=jenkins johnnypl/jenkins-php 
 ```
-
+Background run container: 
+```shell script
+docker run -d -p 8080:8080 -p 50000:50000 --restart=always -v jenkins_home:/var/jenkins_home --name=jenkins johnnypl/jenkins-php 
+```
 #### Time Zone
 
 Start container with your time zone simple added docker environment ``` -e TZ=Europe/Warsaw ```
@@ -51,8 +53,10 @@ name-of-plugin:version
 ```
 Example of plugins.txt:
 ```shell script
-blueocean:1.22.0
+blueocean:1.24.8
 ```
+
+A list of all plugins can be found at: https://plugins.jenkins.io/
 
 #### Docker compose
 This is example of docker-compose, you can also download a file from [source](https://github.com/JanoPL/JenkinsDocker/blob/master/docker-compose.yml)
@@ -63,7 +67,6 @@ version: "3.7"
 volumes:
   jenkins_home:
     driver: local
-    external: true
 
 services:
   jenkins:
@@ -75,7 +78,9 @@ services:
       context: .
       dockerfile: ./Dockerfile
       args:
+        - TZ=Europe/Warsaw
         - TARGET_PHP_VERSION=${TARGET_PHP_VERSION}
+        - TARGET_NODEJS_VERSION=${TARGET_NODEJS_VERSION}
     ports:
     - 8080:8080
     - 50000:50000
@@ -89,5 +94,5 @@ services:
 #### Requirements
  
 Minimum version:
-- Docker: 19.03.5
-- docker-compose: 1.25.4
+- Docker: 20.10.8
+- docker-compose: 1.29.2
