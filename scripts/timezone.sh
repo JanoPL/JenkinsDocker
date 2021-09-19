@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 TZ=$1;
 
 if ! test -z $TZ
