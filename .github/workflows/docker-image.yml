@@ -1,12 +1,12 @@
-name: Publish Docker image
+name: Publish Docker image angular
 
 on:
   push:
     branches:
-      - angular
+      - angular-dev
   pull_request:
     branches:
-      - angular
+      - angular-master
   schedule:
     - cron: '0 0 * * 0' #every sunday
 
@@ -29,7 +29,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          tags: {{ env.DOCKER_TAG }}
+          tags: ${{ env.DOCKER_TAG }}
           outputs: type=docker,dest=/tmp/jenkins-php.tar
 
       - name: Upload artifact
@@ -77,7 +77,7 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: {{ env.DOCKER_TAG }}
+          tags: ${{ env.DOCKER_TAG }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
