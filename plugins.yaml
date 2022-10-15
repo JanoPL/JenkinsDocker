@@ -1,0 +1,22 @@
+plugins:
+  - artifactId: jaxb
+    source:
+      version: 2.3.6-2
+  - artifactId: analysis-model-api
+    source:
+      version: 10.17.0
+  - artifactId: warnings-ng
+    source:
+      version: 9.20.1
+  - artifactId: blueocean
+    source:
+      version: 1.25.8
+  - artifactId: ssh-agent
+    source:
+      version: 1.24.1
+  - artifactId: credentials
+    source:
+      version: 1189.vf61b_a_5e2f62e
+  - artifactId: ssh-slaves
+    source:
+      version: 2.846.v1b_70190624f5

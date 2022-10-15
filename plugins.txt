@@ -1,4 +1,0 @@
-analysis-model-api:10.3.0
-warnings-ng:9.5.0
-blueocean:1.24.8
-ssh-agent:1.23
