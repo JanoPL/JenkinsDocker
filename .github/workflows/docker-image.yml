@@ -10,8 +10,11 @@ on:
   schedule:
     - cron: '0 0 * * 0' #every sunday
 
+env:
+  TEST_TAG: janopl/jenkins-php:test
+
 jobs:
-  preparing:
+  build:
     name: Build image
     runs-on: ubuntu-22.04
     steps:
@@ -22,29 +25,58 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v2
 
+      - name: Build and export
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          tags: jenkins-php:latest
+          outputs: type=docker,dest=/tmp/jenkins-php.tar
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: jenkins-php
+          path: /tmp/jenkins-php.tar
+
+
   push_to_registry:
-    if: github.event_name != 'pull_request'
+    if: github.event_name == 'pull_request'
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-22.04
-    needs: [preparing]
+    needs: [build]
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
       - name: Log in to Docker Hub
-        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
-      - name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v2
+      - name: Download artifact
+        uses: actions/download-artifact@v3
         with:
-          context: ./
-          file: ./Dockerfile
-          builder: ${{ steps.buildx.outputs.name }}
+          name: jenkins-php
+          path: /tmp
+
+      - name: Load image
+        run: |
+          docker load --input /tmp/jenkins-php.tar
+          docker image ls -a
+
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/jenkins-php:latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
