@@ -2,25 +2,37 @@ name: Publish Docker image
 
 on:
   push:
-    branches: ['master']
+    branches:
+      - dev
+  pull_request:
+    branches:
+      - master
+  schedule:
+    - cron: '0 0 * * 0' #every sunday
 
 jobs:
-  push_to_registry:
-    name: Push Docker image to Docker Hub
-    runs-on: ubuntu-18.04
+  preparing:
+    name: Build image
+    runs-on: ubuntu-22.04
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
+
+  push_to_registry:
+    if: github.event_name != 'pull_request'
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-22.04
+    needs: [preparing]
+    steps:
       - name: Log in to Docker Hub
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
-
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v1
 
       - name: Build and push
         id: docker_build
