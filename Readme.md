@@ -7,15 +7,14 @@ Image based on jenkins debian the version [jenkins/jenkins:latest](https://hub.d
 
 contains: 
 - Node version: 16
-- PHP version: 8.0
+- PHP version: 8.1
 - plugins: 
     ```shell script
-    analysis-model-api:10.3.0
-    warnings-ng:9.5.0
-    blueocean:1.24.8
-    ssh-agent:1.23
+    analysis-model-api:10.17.0
+    warnings-ng:9.20.1
+    blueocean:1.25.8
+    ssh-agent:1.24.1
     ```
-
 
 ## Get started
 To run simply enter one of the following commands or you can use the docker-compose command
@@ -45,15 +44,14 @@ docker run -p 8080:8080 -p 50000:50000 --restart=always -v jenkins_home:/var/jen
 ## Source code 
 
 #### Plugins
-In the plugins.txt file you can add new plugins when compiling the image
+In the plugins.yaml file you can add new plugins when compiling the image
 
 New plugins must look like this, more plugins can be found on [Jenkins plugins](https://plugins.jenkins.io/)
-```shell script
-name-of-plugin:version
-```
-Example of plugins.txt:
-```shell script
-blueocean:1.24.8
+```yaml
+plugins:
+  - artifactId: ssh-agent
+    source:
+      version: 1.24.1
 ```
 
 A list of all plugins can be found at: https://plugins.jenkins.io/
@@ -61,6 +59,11 @@ A list of all plugins can be found at: https://plugins.jenkins.io/
 #### Docker compose
 This is example of docker-compose, you can also download a file from [source](https://github.com/JanoPL/JenkinsDocker/blob/master/docker-compose.yml)
 
+#### Usage
+
+To boot up container, execute command in shell terminal ``` docker compose up -d ```
+
+#### example:
 ```shell script
 version: "3.7"
 
@@ -94,5 +97,5 @@ services:
 #### Requirements
  
 Minimum version:
-- Docker: 20.10.8
-- docker-compose: 1.29.2
+- Docker: 20.10.17, build 100c701
+- docker-compose: v2.10.2
