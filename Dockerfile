@@ -60,4 +60,9 @@ COPY ./scripts /tmp/scripts/
 RUN chmod +x -R /tmp/
 RUN /tmp/scripts/timezone.sh ${TZ}
 RUN /tmp/scripts/composer_installer.sh
+
+FROM additionalconfiguration as angular
+RUN npm install -g @angular/cli
+RUN apt autoremove -y
+
 USER jenkins
